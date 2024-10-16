@@ -1,4 +1,6 @@
 CloudWatch Agent Setup on EC2 with SSM Parameters
+
+
 This document outlines the steps to install the Amazon CloudWatch Agent on an EC2 instance and configure it to fetch values from AWS Systems Manager (SSM) Parameter Store.
 Table of Contents
 •	Prerequisites
