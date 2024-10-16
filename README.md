@@ -16,15 +16,15 @@ Prerequisites
 •	Appropriate IAM permissions to create roles and access SSM Parameter Store.
 Step 1: Install CloudWatch Agent
 Amazon Linux 2 / CentOS:
-bash
-Copy code
+
 sudo yum update -y
 sudo yum install amazon-cloudwatch-agent -y
+
 Ubuntu:
-bash
-Copy code
+
 sudo apt-get update -y
 sudo apt-get install amazon-cloudwatch-agent -y
+
 Step 2: Create an IAM Role for EC2
 1.	Go to the IAM console.
 2.	Create a new role with the following AWS managed policies:
@@ -39,6 +39,7 @@ o	Name: /EC2/CloudWatch/AgentConfig
 o	Type: String
 o	Value: Provide the CloudWatch agent configuration in JSON format (see below).
 Step 4: Create CloudWatch Agent Configuration
+
 Create a CloudWatch agent configuration to specify which metrics and logs to collect. Use the following sample JSON configuration:
 json
 Copy code
@@ -78,22 +79,24 @@ Copy code
     }
   }
 }
+
+
 Store this JSON file in SSM Parameter Store under the name /EC2/CloudWatch/AgentConfig.
 Step 5: Configure CloudWatch Agent to Fetch SSM Parameters
 On your EC2 instance, run the following command to fetch the configuration from SSM and start the CloudWatch Agent:
-bash
-Copy code
+
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
   -a fetch-config \
   -m ec2 \
   -c ssm:/EC2/CloudWatch/AgentConfig \
   -s
+  
 This command tells the CloudWatch agent to fetch the configuration from the SSM parameter /EC2/CloudWatch/AgentConfig and apply it.
 Step 6: Verify Installation
 Check the status of the CloudWatch Agent with the following command:
-bash
-Copy code
+
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
+
 This will display the status of the agent, including whether it is actively collecting logs and metrics.
 ________________________________________
 By following these steps, your CloudWatch Agent will be configured to use SSM Parameter Store to dynamically fetch configuration settings for your EC2 instance.
