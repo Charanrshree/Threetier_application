@@ -41,8 +41,7 @@ o	Value: Provide the CloudWatch agent configuration in JSON format (see below).
 Step 4: Create CloudWatch Agent Configuration
 
 Create a CloudWatch agent configuration to specify which metrics and logs to collect. Use the following sample JSON configuration:
-json
-Copy code
+
 {
   "agent": {
     "metrics_collection_interval": 60,
