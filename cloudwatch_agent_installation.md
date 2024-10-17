@@ -2,7 +2,7 @@
 
 
 This document outlines the steps to install the Amazon CloudWatch Agent on an EC2 instance and configure it to fetch values from AWS Systems Manager (SSM) Parameter Store.
-Table of Contents
+**Table of Contents**
 •	Prerequisites
 •	Step 1: Install CloudWatch Agent
 •	Step 2: Create an IAM Role for EC2
@@ -18,12 +18,12 @@ ________________________________________
 
 **Step 1: Install CloudWatch Agent**
 
-Amazon Linux 2 / CentOS:
+**Amazon Linux 2 / CentOS:**
 
 sudo yum update -y
 sudo yum install amazon-cloudwatch-agent -y
 
-Ubuntu:
+**Ubuntu:**
 
 sudo apt-get update -y
 sudo apt-get install amazon-cloudwatch-agent -y
