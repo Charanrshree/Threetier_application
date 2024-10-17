@@ -9,12 +9,15 @@ Command to Extend the file system:
 ===========================================================
 df -hT
 
-Check whether the volume has a partition:
+**Check whether the volume has a partition**:
+
 sudo lsblk
 
-Extend the partition:
+**Extend the partition**:
+
 sudo growpart /dev/xvda 1
 
-Extend the file system on /:    this path of disk her / means root and below filesystem and ext4 use one command
+**Extend the file system on /:**    this path of disk her / means root and below filesystem and ext4 use one command
+
 [XFS file system]: sudo xfs_growfs -d /
 [Ext4 file system]: sudo resize2fs /dev/xvda1
