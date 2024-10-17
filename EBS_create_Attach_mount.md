@@ -7,7 +7,7 @@ These changes can done on the fly without stopping the EC2 instance.
 df -h
 
 **Lists all the block devices in the Linux Machine:**
-lsblk 
+lsblk  
 
 **Check if there is any file system on new EBS Volume:**
 file -s /dev/xvdf
