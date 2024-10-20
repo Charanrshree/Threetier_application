@@ -12,43 +12,43 @@ To address these challenges, the company adopts AWS Elastic File System (EFS). E
 **Solution:**
 
 
-1. **Launching EC2 Instances in Multiple Availability Zones**
+**1. **Launching EC2 Instances in Multiple Availability Zones****
    
 Objective: Spin up two EC2 instances in different Availability Zones (AZs) to ensure high availability, redundancy, and performance. Both instances will share access to the same AWS EFS (Elastic File System).
 
-Steps:
+**Steps:**
 
-Create a Security Group: We’ll need to define a security group to keep things safe.
+**Create a Security Group: We’ll need to define a security group to keep things safe.**
 
 aws ec2 create-security-group --group-name StorageLabs --description "SG for EFS storage"
 
-Add an Inbound SSH Rule: This allows you to log into your instances for some hands-on fun.
+**Add an Inbound SSH Rule: This allows you to log into your instances for some hands-on fun.**
 
 aws ec2 authorize-security-group-ingress --group-name StorageLabs --protocol tcp --port 22 --cidr 0.0.0.0/0
 
-Launch EC2 in US-EAST-1A: Time to start the first instance in AZ 1A.
+**Launch EC2 in US-EAST-1A: Time to start the first instance in AZ 1A.**
 
 aws ec2 run-instances --image-id ami-0866a3c8686eaeeba --instance-type t2.micro --placement AvailabilityZone=us-east-1a --security-group-ids sg-00055e6ae2bc876ce
 
-Launch EC2 in US-EAST-1B: Now, fire up the second instance in AZ 1B for redundancy and magic.
+**Launch EC2 in US-EAST-1B: Now, fire up the second instance in AZ 1B for redundancy and magic.**
 
 aws ec2 run-instances --image-id ami-0866a3c8686eaeeba --instance-type t2.micro --placement AvailabilityZone=us-east-1b --security-group-ids sg-00055e6ae2bc876ce
 
-Now we have two EC2 buddies in different AZs, ready to share files like they’re best friends forever.
+**Now we have two EC2 buddies in different AZs, ready to share files like they’re best friends forever.**
 
 2. **Creating and Configuring AWS EFS (Elastic File System)**
 
 Objective: Set up an AWS EFS that both EC2 instances can access, making it easy to share data between them.
 
-Steps:
+**Steps:**
 
 Create an EFS File System: Head to the AWS console, and with just a few clicks, boom—you’ve got an EFS. Associate it with the security group we created earlier. Keep all settings as default (it’s easy like Sunday morning).
 
-Add NFS Protocol Rule: To make sure the EC2s and EFS play nicely, add an NFS rule to your security group.
+**Add NFS Protocol Rule: To make sure the EC2s and EFS play nicely, add an NFS rule to your security group.**
 
 aws ec2 authorize-security-group-ingress --group-id sg-00055e6ae2bc876ce --protocol tcp --port 2049 --source-group sg-00055e6ae2bc876ce
 
-Mount the EFS: Jump into each EC2 instance, install the NFS client, and create a directory where we’ll mount the file system.
+**Mount the EFS: Jump into each EC2 instance, install the NFS client, and create a directory where we’ll mount the file system**.
 
 **Install NFS Client:**
 
@@ -68,31 +68,31 @@ Mount on Both Instances: Now, mount the EFS on both EC2s like a pro! Create a fi
    
 Objective: Let’s step up the security game by enforcing encryption for all data transfers between the EC2 instances and the EFS.
 
-Steps:
+**Steps:**
 
 Create a File System Policy: Use the AWS console to set up a policy that enforces encryption in transit. This ensures all connections to the EFS are secured.
 
-Unmount the File System: Before we proceed, unmount the EFS from your EC2 instance (and make sure you’re not in the mount directory when you do this—safety first).
+**Unmount the File System: Before we proceed, unmount the EFS from your EC2 instance (and make sure you’re not in the mount directory when you do this—safety first).**
 
 sudo umount ~/efs-mount-point
 
-Remount and What Happens?: After applying the encryption policy, when you try to remount using the standard NFS client, boom! Access denied! Why? Because the basic NFS client doesn’t support encryption in transit, which is now a must.
+**Remount and What Happens?: After applying the encryption policy, when you try to remount using the standard NFS client, boom! Access denied! Why? Because the basic NFS client doesn’t support encryption in transit, which is now a must.**
 
 sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport :/ ~/efs-mount-point
 
 But don’t worry, there’s a solution.
 
-Solution: Use EFS Utils: The secret sauce here is using Amazon’s EFS Utils, which supports the TLS encryption required by our new policy.
+**Solution: Use EFS Utils: The secret sauce here is using Amazon’s EFS Utils, which supports the TLS encryption required by our new policy**.
 
-Install EFS Utils: Quickly install EFS Utils on your EC2s and you’re good to go!
+**Install EFS Utils: Quickly install EFS Utils on your EC2s and you’re good to go!**
 
 sudo yum install -y amazon-efs-utils
 
-Mount Again with Encryption: This time, mount your EFS with encryption enabled. Smooth sailing from here!
+**Mount Again with Encryption: This time, mount your EFS with encryption enabled. Smooth sailing from here!**
 
 sudo mount -t efs -o tls :/ ~/efs-mount-point
 
-Outcome:
+**Outcome:**
 
 Your teams can now access the same files across different AZs with practically zero latency.
 
