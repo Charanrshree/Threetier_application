@@ -1,12 +1,8 @@
-Building a Scalable Media Storage Solution with AWS EFS and EC2 Instances
-Building a Scalable Media Storage Solution with AWS EFS and EC2 Instances
 
-A Monk in Cloud's photo
-A Monk in Cloud
-·
-Oct 10, 2024
-·
-4 min read
+![image](https://github.com/user-attachments/assets/6a3d8041-819f-425b-adad-55ceed57f870)
+
+
+**Building a Scalable Media Storage Solution with AWS EFS and EC2 Instances**
 
 Business Scenario
 A media production firm requires a centralised, scalable storage solution that can be accessed by multiple EC2 instances deployed across different Availability Zones (AZs). The company handles large volumes of video files and other media assets that need to be shared efficiently among several production teams. Their infrastructure demands high availability, seamless scalability, and top-tier performance, along with secure data transmission between servers.
